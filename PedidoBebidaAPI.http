@@ -1,0 +1,6 @@
+@PedidoBebidaAPI_HostAddress = http://localhost:5295
+
+GET {{PedidoBebidaAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
