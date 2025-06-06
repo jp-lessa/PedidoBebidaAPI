@@ -1,4 +1,6 @@
 using FluentValidation.AspNetCore;
+using PedidoBebidaAPI.Repositories;
+using PedidoBebidaAPI.Services;
 using PedidoBebidaAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,9 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<RevendaService>();
+builder.Services.AddSingleton<IRevendaRepository, RevendaRepository>();
 
 var app = builder.Build();
 
