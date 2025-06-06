@@ -7,14 +7,19 @@ namespace PedidoBebidaAPI.Services
     public class RevendaService
     {
         private readonly IRevendaRepository _revendaRepository;
+        private readonly ILogger<RevendaService> _logger;
 
-        public RevendaService(IRevendaRepository revendaRepository)
+
+        public RevendaService(IRevendaRepository revendaRepository, ILogger<RevendaService> logger)
         {
             _revendaRepository = revendaRepository;
+            _logger = logger;
         }
 
         public void Cadastrar(RevendaRequest request)
         {
+            _logger.LogInformation("Iniciando cadastro da revenda CNPJ {Cnpj}", request.Cnpj);
+
             var revenda = new Revenda
             {
                 Cnpj = request.Cnpj,
@@ -27,17 +32,26 @@ namespace PedidoBebidaAPI.Services
             };
 
             _revendaRepository.Adicionar(revenda);
+
+            _logger.LogInformation("Revenda CNPJ {Cnpj} cadastrada com sucesso!", request.Cnpj);
+
         }
 
         public IEnumerable<Revenda> Listar()
         {
+            _logger.LogInformation("Listando todas as revendas cadastradas.");
+
             return _revendaRepository.ObterTodas();
         }
 
         private List<EnderecoRevenda> CadastrarEnderecos(List<EnderecoRequest>? enderecosEntrega)
         {
             if (enderecosEntrega is null || enderecosEntrega.Count == 0)
+            {
+                _logger.LogWarning("Nenhum endereço de entrega informado.");
+
                 return new List<EnderecoRevenda>();
+            }
 
             return enderecosEntrega.Select(e => new EnderecoRevenda
             {
@@ -52,7 +66,11 @@ namespace PedidoBebidaAPI.Services
         private List<ContatoRevenda> CadastrarContatos(List<ContatoRequest>? contatos)
         {
             if (contatos is null || contatos.Count == 0)
+            {
+                _logger.LogWarning("Nenhum contato informado.");
+
                 return new List<ContatoRevenda>();
+            }
 
             return contatos.Select(c => new ContatoRevenda
             {
