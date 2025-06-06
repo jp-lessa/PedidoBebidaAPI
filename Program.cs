@@ -18,6 +18,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<RevendaService>();
 builder.Services.AddSingleton<IRevendaRepository, RevendaRepository>();
 
+builder.Services.AddSingleton<PedidoClienteService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
