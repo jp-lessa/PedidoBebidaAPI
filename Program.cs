@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using PedidoBebidaAPI.Configuration;
 using PedidoBebidaAPI.Repositories;
 using PedidoBebidaAPI.Services;
 using PedidoBebidaAPI.Validators;
@@ -18,7 +19,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<RevendaService>();
 builder.Services.AddSingleton<IRevendaRepository, RevendaRepository>();
 
+builder.Services.AddHttpClient<IPedidoExternoService, PedidoExternoService>()
+    .AddPolicyHandler(Policies.ObterRetryPolicy());
+
 builder.Services.AddSingleton<PedidoClienteService>();
+builder.Services.AddScoped<PedidoRevendaService>();
+builder.Services.AddScoped<PedidoRevendaValidator>();
+
 
 var app = builder.Build();
 
